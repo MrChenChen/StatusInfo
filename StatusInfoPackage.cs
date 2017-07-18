@@ -13,7 +13,7 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Process = System.Diagnostics.Process;
 
-namespace Lkytal.StatusInfo
+namespace MyVSTool
 {
     /// <summary>
     /// This is the class that implements the package exposed by this assembly.
@@ -36,9 +36,9 @@ namespace Lkytal.StatusInfo
     [ProvideAutoLoad(UIContextGuids80.NoSolution)]
     [ProvideAutoLoad(UIContextGuids80.SolutionExists)]
     [ProvideAutoLoad(UIContextGuids80.EmptySolution)]
-    [ProvideOptionPage(typeof(OptionsPage), "StatusBar Info", "General", 0, 0, true)]
+    [ProvideOptionPage(typeof(OptionsPage), "MyVSTool Info", "General", 0, 0, true)]
 
-    public sealed class StatusInfoPackage : Package
+    public sealed class StatusInfoPackage : Package, IDisposable
     {
         private Timer RefreshTimer;
 
@@ -137,6 +137,15 @@ namespace Lkytal.StatusInfo
             };
 
             InfoControl.Dispatcher.BeginInvoke(act);
+        }
+
+        public void Dispose()
+        {
+            RefreshTimer.Dispose();
+            IdeProcess.Dispose();
+            TotalCpuCounter.Dispose();
+            TotalRamCounter.Dispose();
+            OptionsPage.Dispose();
         }
     }
 }

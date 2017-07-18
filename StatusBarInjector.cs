@@ -6,7 +6,7 @@ using System.Windows.Media;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell.Interop;
 
-namespace Lkytal.StatusInfo
+namespace MyVSTool
 {
     internal class StatusBarInjector
     {

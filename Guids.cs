@@ -2,7 +2,7 @@
 // MUST match guids.h
 using System;
 
-namespace Lkytal.StatusInfo
+namespace MyVSTool
 {
 	static class GuidList
 	{

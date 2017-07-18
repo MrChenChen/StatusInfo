@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace Lkytal.StatusInfo
+namespace MyVSTool
 {
 	internal class TextBlockList : List<TextBlock>
 	{

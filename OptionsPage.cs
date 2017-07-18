@@ -3,7 +3,7 @@ using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 
-namespace Lkytal.StatusInfo
+namespace MyVSTool
 {
 	[ClassInterface(ClassInterfaceType.AutoDual)]
 	public class OptionsPage : DialogPage

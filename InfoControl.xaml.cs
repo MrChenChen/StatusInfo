@@ -12,7 +12,7 @@ using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
-namespace Lkytal.StatusInfo
+namespace MyVSTool
 {
     public partial class InfoControl : UserControl
     {
@@ -163,7 +163,7 @@ namespace Lkytal.StatusInfo
             totalRam = pTotalRam;
             InitializeComponent();
             textBlockLists = new Dictionary<string, TextBlockList>();
-            Format = "Loading StatusBarInfos...";
+            Format = "Loading MyVSTool...";
         }
 
         private Brush GetCpuColor(int cpu)

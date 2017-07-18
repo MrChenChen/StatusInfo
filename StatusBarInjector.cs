@@ -1,114 +1,92 @@
 using System;
-using System.Collections;
-using System.Runtime.CompilerServices;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using System.Windows.Threading;
+using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Lkytal.StatusInfo
 {
-	internal class StatusBarInjector
-	{
-		private Window window;
+    internal class StatusBarInjector
+    {
+        private readonly Window MainWindow;
 
-		private FrameworkElement statusBar;
+        private FrameworkElement statusBar;
 
-		private Panel panel;
+        private Panel panel;
 
-		public StatusBarInjector(Window pWindow)
-		{
-			this.window = pWindow;
-			this.window.Initialized += new EventHandler(this.window_Initialized);
+        public StatusBarInjector(Window pMainWindow)
+        {
+            MainWindow = pMainWindow;
+            MainWindow.Initialized += MainWindowInitialized;
 
-			this.FindStatusBar();
-		}
+            FindStatusBar();
+        }
 
-		private static DependencyObject FindChild(DependencyObject parent, string childName)
-		{
-			if (parent == null)
-			{
-				return null;
-			}
-			int childrenCount = VisualTreeHelper.GetChildrenCount(parent);
-			for (int i = 0; i < childrenCount; i++)
-			{
-				DependencyObject child = VisualTreeHelper.GetChild(parent, i);
-				FrameworkElement frameworkElement = child as FrameworkElement;
-				if (frameworkElement != null && frameworkElement.Name == childName)
-				{
-					return frameworkElement;
-				}
-				child = StatusBarInjector.FindChild(child, childName);
-				if (child != null)
-				{
-					return child;
-				}
-			}
-			return null;
-		}
+        private static DependencyObject FindChild(DependencyObject parent, string childName)
+        {
+            if (parent == null)
+            {
+                return null;
+            }
 
-		private void FindStatusBar()
-		{
-			this.statusBar = StatusBarInjector.FindChild(this.window, "StatusBarContainer") as FrameworkElement;
-			this.panel = this.statusBar.Parent as DockPanel;
-		}
+            int childrenCount = VisualTreeHelper.GetChildrenCount(parent);
+            for (int i = 0; i < childrenCount; i++)
+            {
+                DependencyObject child = VisualTreeHelper.GetChild(parent, i);
+                FrameworkElement frameworkElement = child as FrameworkElement;
+                if (frameworkElement != null && frameworkElement.Name == childName)
+                {
+                    return frameworkElement;
+                }
+                child = FindChild(child, childName);
+                if (child != null)
+                {
+                    return child;
+                }
+            }
+            return null;
+        }
 
-		private static FrameworkElement FindStatusBarContainer(Panel panel)
-		{
-			FrameworkElement frameworkElement;
-			IEnumerator enumerator = panel.Children.GetEnumerator();
-			try
-			{
-				while (enumerator.MoveNext())
-				{
-					FrameworkElement current = enumerator.Current as FrameworkElement;
-					if (current == null || !(current.Name == "StatusBarContainer"))
-					{
-						continue;
-					}
-					frameworkElement = current;
-					return frameworkElement;
-				}
-				return null;
-			}
-			finally
-			{
-				IDisposable disposable = enumerator as IDisposable;
-				if (disposable != null)
-				{
-					disposable.Dispose();
-				}
-			}
-		}
+        private void FindStatusBar()
+        {
+            statusBar = FindChild(MainWindow, "StatusBarContainer") as FrameworkElement;
+            var frameworkElement = statusBar;
+            if (frameworkElement != null) panel = frameworkElement.Parent as DockPanel;
+        }
 
-		public void InjectControl(FrameworkElement pControl)
-		{
-			this.panel.Dispatcher.Invoke(() => {
-				pControl.SetValue(DockPanel.DockProperty, Dock.Right);
-				this.panel.Children.Insert(1, pControl);
-			});
-		}
+        public void InjectControl(FrameworkElement pControl)
+        {
+            panel.Dispatcher.Invoke(() =>
+            {
+                pControl.SetValue(DockPanel.DockProperty, Dock.Right);
+                panel.Children.Insert(1, pControl);
+            });
+        }
 
-		public bool IsInjected(FrameworkElement pControl)
-		{
-			bool flag2 = false;
-			this.panel.Dispatcher.Invoke<bool>(() => {
-				bool flag = this.panel.Children.Contains(pControl);
-				bool flag1 = flag;
-				flag2 = flag;
-				return flag1;
-			});
-			return flag2;
-		}
+        public bool IsInjected(FrameworkElement pControl)
+        {
+            bool flag2 = false;
+            panel.Dispatcher.Invoke(() =>
+            {
+                bool flag = panel.Children.Contains(pControl);
+                bool flag1 = flag;
+                flag2 = flag;
+                return flag1;
+            });
+            return flag2;
+        }
 
-		public void UninjectControl(FrameworkElement pControl)
-		{
-			this.panel.Dispatcher.Invoke(() => this.panel.Children.Remove(pControl));
-		}
+        public void UninjectControl(FrameworkElement pControl)
+        {
+            panel.Dispatcher.Invoke(() => panel.Children.Remove(pControl));
+        }
 
-		private void window_Initialized(object sender, EventArgs e)
-		{
-		}
-	}
+        private void MainWindowInitialized(object sender, EventArgs e)
+        {
+        }
+    }
+
+    
 }

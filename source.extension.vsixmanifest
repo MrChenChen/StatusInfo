@@ -1,18 +1,27 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
-	<Metadata>
-		<Identity Id="72581eb6-4dcd-4b8f-9add-c4257d4fb9d7" Version="1.1.2" Language="en-US" Publisher="Lkytal" />
-		<DisplayName>StatusInfo</DisplayName>
-		<Description>Information about my package</Description>
-	</Metadata>
-	<Installation InstalledByMsi="false">
-		<InstallationTarget Id="Microsoft.VisualStudio.Pro" Version="[12.0,14.0]" />
-	</Installation>
-	<Dependencies>
-		<Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.5,)" />
-		<Dependency Id="Microsoft.VisualStudio.MPF.12.0" DisplayName="Visual Studio MPF 12.0" d:Source="Installed" Version="[12.0,14.0]" />
-	</Dependencies>
-	<Assets>
-		<Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%;PkgdefProjectOutputGroup|" />
-	</Assets>
+  <Metadata>
+    <Identity Id="2A04EE93-28D9-4E6C-8A11-425BE77F8CEE" Version="1.3.7" Language="en-US" Publisher="ZhaoChen &amp; Lkytal" />
+    <DisplayName>My VS Tools</DisplayName>
+    <Description xml:space="preserve">Display CPU usage and the memory usage of the current instance of Visual Studio in the status bar
+Open Current Directory
+Fork from https://github.com/lkytal/StatusInfo</Description>
+    <License>LICENSE.txt</License>
+    <Icon>icon.png</Icon>
+    <PreviewImage>info.png</PreviewImage>
+    <Tags>Status, Info, Infomation, Directory</Tags>
+  </Metadata>
+  <Installation InstalledByMsi="false">
+    <InstallationTarget Id="Microsoft.VisualStudio.Pro" Version="[12.0,16.0)" />
+  </Installation>
+  <Dependencies>
+    <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.5,)" />
+    <Dependency Id="Microsoft.VisualStudio.MPF.12.0" DisplayName="Visual Studio MPF 12.0" d:Source="Installed" Version="[12.0,16.0)" />
+  </Dependencies>
+  <Assets>
+    <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%;PkgdefProjectOutputGroup|" />
+  </Assets>
+  <Prerequisites>
+    <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[12.0,16.0)" DisplayName="Visual Studio 核心编辑器" />
+  </Prerequisites>
 </PackageManifest>

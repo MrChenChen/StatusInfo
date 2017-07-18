@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("StatusInfo")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Modify by ZhaoChen")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Lkytal")]
 [assembly: AssemblyProduct("StatusInfo")]
@@ -31,6 +31,5 @@ using System.Runtime.InteropServices;
 
 [assembly: AssemblyVersion("1.0.0.7")]
 [assembly: AssemblyFileVersion("1.0.0.7")]
-
-
+[assembly: Guid("2A04EE93-28D9-4E6C-8A11-425BE77F8CEE")]
 

@@ -5,85 +5,67 @@ using System.Runtime.InteropServices;
 
 namespace MyVSTool
 {
-	[ClassInterface(ClassInterfaceType.AutoDual)]
-	public class OptionsPage : DialogPage
-	{
-		private string format = "CPU: <#CPU>   RAM: <#RAM>";
+    [ClassInterface(ClassInterfaceType.AutoDual)]
+    public class OptionsPage : DialogPage
+    {
+        private string format = "CPU: <#CPU> | <#TOTAL_CPU>  RAM: <#RAM> | <#TOTAL_USE_RAM%>";
 
-		private int interval = 1000;
+        private int interval = 1000;
 
-		private bool useFixedWidth;
+        private string prodirname = "Work_Directory";
 
-		private int fixedWidth = 150;
+        [Category("Design")]
+        [Description("Sets Project Directory Name To Open.")]
+        [DisplayName("Project Directory Name")]
+        public string ProDirName
+        {
+            get
+            {
+                return this.prodirname;
+            }
+            set
+            {
+                this.prodirname = value;
+                this.OptionUpdated("ProDirName", value);
+            }
+        }
 
-		[Category("Design")]
-		[Description("Sets the fixed width.")]
-		[DisplayName("Fixed width")]
-		public int FixedWith
-		{
-			get
-			{
-				return this.fixedWidth;
-			}
-			set
-			{
-				this.fixedWidth = value;
-				this.OptionUpdated("FixedWidth", value);
-			}
-		}
+        [Category("General")]
+        [Description("Sets the format of the information.\r\n \"CPU\", \"TOTAL_CPU\", \"RAM\", \"FREE_RAM\", \"TOTAL_USE_RAM\", \"RAM%\", \"FREE_RAM%\", \"TOTAL_USE_RAM%\"")]
+        [DisplayName("Format")]
+        public string Format
+        {
+            get
+            {
+                return this.format;
+            }
+            set
+            {
+                this.format = value;
+                this.OptionUpdated("Format", value);
+            }
+        }
 
-		[Category("General")]
-		[Description("Sets the format of the information.")]
-		[DisplayName("Format")]
-		public string Format
-		{
-			get
-			{
-				return this.format;
-			}
-			set
-			{
-				this.format = value;
-				this.OptionUpdated("Format", value);
-			}
-		}
+        [Category("General")]
+        [Description("Sets the refresh interval in ms.")]
+        [DisplayName("Interval")]
+        public int Interval
+        {
+            get
+            {
+                return this.interval;
+            }
+            set
+            {
+                this.interval = value;
+                this.OptionUpdated("Interval", value);
+            }
+        }
 
-		[Category("General")]
-		[Description("Sets the refresh interval in ms.")]
-		[DisplayName("Interval")]
-		public int Interval
-		{
-			get
-			{
-				return this.interval;
-			}
-			set
-			{
-				this.interval = value;
-				this.OptionUpdated("Interval", value);
-			}
-		}
-
-		[Category("Design")]
-		[Description("Determines whether fixed width should be used.")]
-		[DisplayName("Use fixed width")]
-		public bool UseFixedWidth
-		{
-			get
-			{
-				return this.useFixedWidth;
-			}
-			set
-			{
-				this.useFixedWidth = value;
-				this.OptionUpdated("UseFixedWidth", value);
-			}
-		}
-
-		private void OptionUpdated(string pName, object pValue)
-		{
-			var statusInfoPackage = (StatusInfoPackage)this.GetService(typeof(StatusInfoPackage));
-			statusInfoPackage?.OptionUpdated(pName, pValue);
-		}
-	}
+        private void OptionUpdated(string pName, object pValue)
+        {
+            var statusInfoPackage = (StatusInfoPackage)this.GetService(typeof(StatusInfoPackage));
+            statusInfoPackage?.OptionUpdated(pName, pValue);
+        }
+    }
 }

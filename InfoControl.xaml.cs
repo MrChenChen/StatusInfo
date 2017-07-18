@@ -24,10 +24,6 @@ namespace MyVSTool
 
         private readonly long totalRam;
 
-        private int fixedWidth = 150;
-
-        private bool useFixedWidth;
-
         public int CpuUsage
         {
             set
@@ -39,18 +35,6 @@ namespace MyVSTool
             }
         }
 
-        public int FixedWidth
-        {
-            get
-            {
-                return fixedWidth;
-            }
-            set
-            {
-                fixedWidth = value;
-                UseFixedWidth = UseFixedWidth;
-            }
-        }
 
         public string Format
         {
@@ -129,24 +113,6 @@ namespace MyVSTool
                 textBlockLists["<TOTAL_CPU>"].Text = TotalCpuValue;
                 textBlockLists["<#TOTAL_CPU>"].Text = TotalCpuValue;
                 textBlockLists["<#TOTAL_CPU>"].Foreground = GetCpuColor(value);
-            }
-        }
-
-        public bool UseFixedWidth
-        {
-            get
-            {
-                return useFixedWidth;
-            }
-            set
-            {
-                useFixedWidth = value;
-                if (!useFixedWidth)
-                {
-                    Width = double.NaN;
-                    return;
-                }
-                Width = FixedWidth;
             }
         }
 

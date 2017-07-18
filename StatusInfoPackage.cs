@@ -37,6 +37,7 @@ namespace MyVSTool
     [ProvideAutoLoad(UIContextGuids80.SolutionExists)]
     [ProvideAutoLoad(UIContextGuids80.EmptySolution)]
     [ProvideOptionPage(typeof(OptionsPage), "MyVSTool Info", "General", 0, 0, true)]
+    [ProvideMenuResource("Menus.ctmenu", 1)]
 
     public sealed class StatusInfoPackage : Package, IDisposable
     {
@@ -112,11 +113,11 @@ namespace MyVSTool
                 case "Interval":
                     RefreshTimer.Interval = (int)pValue;
                     break;
-                case "UseFixedWidth":
-                    InfoControl.UseFixedWidth = (bool)pValue;
-                    break;
                 case "FixedWidth":
-                    InfoControl.FixedWidth = (int)pValue;
+                    InfoControl.stackPanel.Width = (int)pValue;
+                    break;
+                case "ProDirName":
+                    InfoControl.buttonOpen.Content = (string)pValue;
                     break;
             }
         }

@@ -12,6 +12,8 @@ namespace MyVSTool
 
         private int interval = 1000;
 
+        private string moredirectory = "";
+
         private string prodirname = "Work_Directory";
 
         [Category("Design")]
@@ -61,6 +63,23 @@ namespace MyVSTool
                 this.OptionUpdated("Interval", value);
             }
         }
+
+        [Category("Design")]
+        [Description("Add More Directory to ContextMenu.\r\ne.g. \"bin\\Debug;..\\\"\r\nSeparator:  \";\"  \"|\"  \",\"")]
+        [DisplayName("More Directory")]
+        public string MoreDirectory
+        {
+            get
+            {
+                return this.moredirectory;
+            }
+            set
+            {
+                this.moredirectory = value;
+                this.OptionUpdated("MoreDirectory", value);
+            }
+        }
+
 
         private void OptionUpdated(string pName, object pValue)
         {

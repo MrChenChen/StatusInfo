@@ -119,6 +119,9 @@ namespace MyVSTool
                 case "ProDirName":
                     InfoControl.buttonOpen.Content = (string)pValue;
                     break;
+                case "MoreDirectory":
+                    InfoControl.SetMoreDirectory((string)pValue);
+                    break;
             }
         }
 

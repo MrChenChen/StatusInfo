@@ -196,6 +196,40 @@ namespace MyVSTool
 
         private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
         {
+            GetCurrentDir().ForEach(p => p.OpenExplorerPath());
+        }
+
+        public void SetMoreDirectory(string moredir)
+        {
+            var bs = moredir
+                .Split(new[] { ';', '|', ',' }, StringSplitOptions.RemoveEmptyEntries)
+                .Select(p => p.Trim())
+                .ToList();
+
+            mainGrid.ContextMenu = new ContextMenu();
+
+            if (bs.Count == 0) return;
+
+            bs.ForEach(p =>
+            {
+                var menu = new MenuItem { Header = p };
+
+                menu.Click += (s, e) =>
+                {
+                    var list = GetCurrentDir().Select(t => Path.GetFullPath(Path.Combine(t, p))).ToList();
+
+                    list.ForEach(x => x.OpenExplorerPath());
+                };
+
+                mainGrid.ContextMenu.Items.Add(menu);
+            });
+        }
+
+
+        private List<string> GetCurrentDir()
+        {
+            var list = new List<string>();
+
             IVsSolution solution = (IVsSolution)Microsoft.VisualStudio.Shell.Package.GetGlobalService(typeof(IVsSolution));
 
             SolutionBuild sb = StatusInfoPackage.GlobalDte.Solution.SolutionBuild;
@@ -207,7 +241,7 @@ namespace MyVSTool
             if (startupname == null)
                 foreach (Project project in MyTool.GetProjects(solution))
                 {
-                    Directory.GetParent(project.FullName).FullName.OpenExplorerPath();
+                    list.Add(Directory.GetParent(project.FullName).FullName);
                     break;
                 }
             else
@@ -217,72 +251,15 @@ namespace MyVSTool
                     {
                         if (project.FullName.EndsWith(item))
                         {
-                            Directory.GetParent(project.FullName).FullName.OpenExplorerPath();
+                            list.Add(Directory.GetParent(project.FullName).FullName);
                         }
                     }
                 }
 
+            return list;
         }
-
-
-
 
     }
-
-
-    public static class MyTool
-    {
-        public static void OpenExplorerPath(this string path)
-        {
-            System.Diagnostics.Process.Start("explorer.exe", path);
-        }
-
-        public static IEnumerable<EnvDTE.Project> GetProjects(IVsSolution solution)
-        {
-            foreach (IVsHierarchy hier in GetProjectsInSolution(solution))
-            {
-                EnvDTE.Project project = GetDTEProject(hier);
-                if (project != null)
-                    yield return project;
-            }
-        }
-
-        public static IEnumerable<IVsHierarchy> GetProjectsInSolution(IVsSolution solution)
-        {
-            return GetProjectsInSolution(solution, __VSENUMPROJFLAGS.EPF_LOADEDINSOLUTION);
-        }
-
-        public static IEnumerable<IVsHierarchy> GetProjectsInSolution(IVsSolution solution, __VSENUMPROJFLAGS flags)
-        {
-            if (solution == null)
-                yield break;
-
-            IEnumHierarchies enumHierarchies;
-            Guid guid = Guid.Empty;
-            solution.GetProjectEnum((uint)flags, ref guid, out enumHierarchies);
-            if (enumHierarchies == null)
-                yield break;
-
-            IVsHierarchy[] hierarchy = new IVsHierarchy[1];
-            uint fetched;
-            while (enumHierarchies.Next(1, hierarchy, out fetched) == VSConstants.S_OK && fetched == 1)
-            {
-                if (hierarchy.Length > 0 && hierarchy[0] != null)
-                    yield return hierarchy[0];
-            }
-        }
-
-        public static EnvDTE.Project GetDTEProject(IVsHierarchy hierarchy)
-        {
-            if (hierarchy == null)
-                throw new ArgumentNullException("hierarchy");
-
-            object obj;
-            hierarchy.GetProperty(VSConstants.VSITEMID_ROOT, (int)__VSHPROPID.VSHPROPID_ExtObject, out obj);
-            return obj as EnvDTE.Project;
-        }
-    }
-
 
 
 }
